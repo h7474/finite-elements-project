@@ -14,11 +14,7 @@ import basix.ufl
 
 # Create mesh and function space
 L = 32.0  # Domain length
-<<<<<<< HEAD
 N = 512  # Number of elements
-=======
-N = 256  # Number of elements
->>>>>>> 3611923e1821279b1d34c214fc963765ea77a6ce
 domain = mesh.create_interval(MPI.COMM_WORLD, N, [0, L])
 
 # Create function space (using Lagrange elements)
@@ -68,11 +64,7 @@ u_n.x.array[:] = u_init
 
 # Apply homogeneous Dirichlet BCs at x=0 and x=L
 def boundary(x):
-<<<<<<< HEAD
     return np.isclose(x[0], L) | np.isclose(x[0], 0)
-=======
-    return np.isclose(x[0], L)
->>>>>>> 3611923e1821279b1d34c214fc963765ea77a6ce
 
 boundary_facets = dolfinx.mesh.locate_entities_boundary(domain, domain.topology.dim-1, boundary)
 bdofs = dolfinx.fem.locate_dofs_topological(V, domain.topology.dim-1, boundary_facets)
@@ -111,11 +103,8 @@ solution = np.zeros((nt+1, len(x)))
 solution[0] = u_init
 times = np.linspace(0, T, nt+1)
 
-<<<<<<< HEAD
 energy = np.zeros(nt+1)
 
-=======
->>>>>>> 3611923e1821279b1d34c214fc963765ea77a6ce
 print("Starting simulation...")
 for i in range(nt):
     t += float(dt.value)
@@ -135,12 +124,9 @@ for i in range(nt):
                     raise
                 u_n1.x.array[:] = u_n.x.array[:]
                 
-<<<<<<< HEAD
         # Compute energy for the new time step
         energy[i+1] = fem.assemble_scalar(fem.form(u_n1 * u_n1 * ufl.dx))
 
-=======
->>>>>>> 3611923e1821279b1d34c214fc963765ea77a6ce
         solution[i+1] = u_n1.x.array[:]
         u_n_1.x.array[:] = u_n.x.array[:]
         u_n.x.array[:] = u_n1.x.array[:]
@@ -234,7 +220,6 @@ np.savez('ks_solution_dolfinx.npz', x=x[:, 0], t=times, solution=solution)
 print("\nSimulation Statistics:")
 print(f"Maximum value: {np.max(solution):.4f}")
 print(f"Minimum value: {np.min(solution):.4f}")
-<<<<<<< HEAD
 print(f"Final time: {t:.3f}")
 
 # Plot the energy evolution over time
@@ -248,6 +233,3 @@ plt.legend()
 plt.tight_layout()
 plt.savefig("ks_energy_evolution.png", dpi=300)
 plt.show()
-=======
-print(f"Final time: {t:.3f}")
->>>>>>> 3611923e1821279b1d34c214fc963765ea77a6ce
